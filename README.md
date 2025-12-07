@@ -1,66 +1,77 @@
-# Final-Year-Project
+# Kidney3D-Recon: Automated Segmentation & Volumetric Reconstruction via Bayesian Optimization
 
-## -- Kidney Segmentation & 3D Reconstruction with Bayesian Optimization
+![Python](https://img.shields.io/badge/Python-3.8%2B-blue)
+![License](https://img.shields.io/badge/License-MIT-green)
+![Open3D](https://img.shields.io/badge/Library-Open3D-orange)
+![PyMeshLab](https://img.shields.io/badge/Library-PyMeshLab-red)
 
-This repository implements an end-to-end pipeline for kidney mesh reconstruction and volume estimation from NIfTI segmentation masks, integrating point-cloud processing, Poisson surface reconstruction, and automated hyperparameter tuning via Bayesian Optimization.
+## 📖 Overview
 
----
+**Kidney3D-Recon** is an end-to-end pipeline designed for the high-fidelity 3D reconstruction and precise volume estimation of kidneys from CT segmentation masks (NIfTI).
 
-## ⚙️ Features
+Unlike traditional static reconstruction methods, this project integrates **Bayesian Optimization** to dynamically tune Poisson Surface Reconstruction parameters (`depth` and `scale`) for each individual case. This approach balances geometric accuracy (Chamfer/Hausdorff distance) with volumetric fidelity, achieving medical-grade reconstruction quality.
 
-- **Dataset**  
-  – KiTs 2023 challenge: 50 abdominal CT cases, 96 kidney samples -- download from [KiTs23 Dataset](https://github.com/neheller/kits23/tree/main/dataset) (In this work, we use from Case0000 to Case0049, the format is `.nii.gz`)  
-  – NIfTI dimensions: `611 × 512 × 512` voxels; labels `0 = background`, `1 = kidney`, `2 = tumor`  
-
-- **Segmentation & Ground-Truth Volume**  
-  – Connected-component separation of left/right kidneys  
-  – Segmentation success rate: `96%`  
-  – Volume error distribution (N = 96): `mean 2.88%`, `median 1.56%`, `std ±3.15%`, `min 0.05%`, `max 17.59%`  
-  – `85.7%` of samples error < `5%`, `95%` < `10%`  
-
-- **Point-Cloud Extraction & Processing**  
-  – Marching Cubes → high-density PLY point clouds  
-  – Statistical outlier removal, voxel downsampling (`1 mm³`), normal estimation & orientation correction  
-
-- **Poisson Surface Reconstruction**  
-  – Adaptive `depth ∈ [7,12]`, `scale ∈ [0.8,1.6]` via Bayesian Optimization (average `40` iterations)  
-  – Loss function balances volume error, Chamfer distance, Hausdorff distance  
-
-- **Mesh Post-Processing**  
-  – Density-based face filtering (`5th–95th` percentiles)  
-  – Hole closing with PyMeshLab, recompute normals  
-
-- **Evaluation Metrics**  
-  – Chamfer distance: `mean 0.0295 ± 0.0102` (min `0.0178`, max `0.0808`)  
-  – Hausdorff distance: `mean 0.1543 ± 0.0716` (min `0.0669`, max `0.3667`)  
-  – Pearson correlation: `CD vs. volume error r = 0.41` (p < 0.005), `HD vs. volume error r = 0.34` (p < 0.05)  
-
-- **Performance**  
-  – Average processing time per case: `≈15 min` (vs. `30 min` traditional)  
+Key capabilities include automated left/right kidney separation, outlier removal, and density-based mesh post-processing.
 
 ---
 
-## 📥 Installation
+## 🚀 Key Features
+
+* **Automated Preprocessing**
+    * Loads NIfTI (`.nii.gz`) segmentation masks (KiTs23 format).
+    * Separates Left/Right kidneys using connected component analysis.
+    * Converts voxel masks to point clouds via Marching Cubes.
+* **Bayesian Hyperparameter Tuning**
+    * Optimizes Poisson reconstruction parameters (`depth` ∈ [7,12], `scale` ∈ [0.8,1.6]).
+    * **Loss Function**: Weighted combination of Volume Error (85%) and Geometric Distance (15%).
+    * **Fallback Mechanism**: Automatically triggers a "Volume Priority" optimization mode if error exceeds 10%.
+* **Advanced Mesh Processing**
+    * Statistical outlier removal and normal orientation correction.
+    * Density-based face filtering (5th–95th percentile) to remove artifacts.
+    * Automated hole closing and non-manifold edge removal using PyMeshLab.
+* **Comprehensive Analytics**
+    * Automated calculation of Chamfer Distance, Hausdorff Distance, and Volumetric Error.
+    * Generation of statistical plots and comparative analysis.
+
+---
+
+## 📊 Performance & Results
+
+Tested on the **KiTs 2023 Challenge Dataset** (50 abdominal CT cases, 96 kidney samples):
+
+| Metric | Statistics |
+| :--- | :--- |
+| **Segmentation Success** | **96%** (Connected-component separation) |
+| **Volume Error** | Mean **2.88%** (Median 1.56%) |
+| **Chamfer Distance** | Mean **0.0295** ± 0.0102 |
+| **Hausdorff Distance**| Mean **0.1543** ± 0.0716 |
+| **Processing Time** | ≈15 min per case (vs. 30 min traditional methods) |
+
+> **Note**: 85.7% of samples achieved a volume error of < 5%.
+
+---
+
+## 🛠️ Installation
 
 ### Prerequisites
-- **Hardware & OS**  
-  Ubuntu 20.04, CUDA 11.8  
-  NVIDIA GPU (e.g., TITAN RTX) recommended for accelerated Poisson reconstruction  
+* **OS**: Ubuntu 20.04 (Recommended) / Windows / macOS
+* **Hardware**: NVIDIA GPU recommended for accelerated reconstruction (CUDA 11.8 support).
 
 ### Setup
+
 ```bash
-# Clone the repository
-git clone https://github.com/Chelsea-19/Final-Year-Project.git
+# 1. Clone the repository
+git clone [https://github.com/Chelsea-19/Final-Year-Project.git](https://github.com/Chelsea-19/Final-Year-Project.git)
 cd Final-Year-Project
 
-# Create and activate a virtual environment
+# 2. Create a virtual environment (Recommended)
 python3 -m venv venv
-source venv/bin/activate
+source venv/bin/activate  # On Windows: venv\Scripts\activate
 
-# Install dependencies
+# 3. Install dependencies
+# Key libraries: open3d, pymeshlab, bayesian-optimization, nibabel, pandas
 pip install -r requirements.txt
-```  
-
+```
 ---
 
 ## 📂 Directory Structure
@@ -80,7 +91,24 @@ Final-Year-Project/
 ```
 
 ---
+## 💻 Usage
 
+### 1. Data Preparation
+Ensure your dataset follows the KiTs23 structure or place NIfTI files (`.nii` / `.nii.gz`) in a case directory.
+
+### 2. Run the Pipeline
+The main script processes cases, generates Ground Truth volumes from masks, and performs reconstruction.
+
+```bash
+python Main_Process/main.py
+```
+Note: Ensure the `base_dir` path in `main.py` points to your dataset location.
+
+### 3. Analyze Results
+After processing, use the analysis script to generate statistical charts (saved as `.png` files):
+```bash
+python Results_Analysis/stats.py
+```
 
 ## 🤝 Ackownledgement
  - Supervisor: Prof. Fei Ma
