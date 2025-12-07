@@ -5,7 +5,7 @@
 ![Open3D](https://img.shields.io/badge/Library-Open3D-orange)
 ![PyMeshLab](https://img.shields.io/badge/Library-PyMeshLab-red)
 
-## 📖 Overview
+## Overview
 
 **Kidney3D-Recon** is an end-to-end pipeline designed for the high-fidelity 3D reconstruction and precise volume estimation of kidneys from CT segmentation masks (NIfTI).
 
@@ -15,7 +15,7 @@ Key capabilities include automated left/right kidney separation, outlier removal
 
 ---
 
-## 🚀 Key Features
+## Key Features
 
 * **Automated Preprocessing**
     * Loads NIfTI (`.nii.gz`) segmentation masks (KiTs23 format).
@@ -35,7 +35,7 @@ Key capabilities include automated left/right kidney separation, outlier removal
 
 ---
 
-## 📊 Performance & Results
+## Performance & Results
 
 Tested on the **KiTs 2023 Challenge Dataset** (50 abdominal CT cases, 96 kidney samples):
 
@@ -51,7 +51,7 @@ Tested on the **KiTs 2023 Challenge Dataset** (50 abdominal CT cases, 96 kidney 
 
 ---
 
-## 🛠️ Installation
+## Installation
 
 ### Prerequisites
 * **OS**: Ubuntu 20.04 (Recommended) / Windows / macOS
@@ -74,7 +74,7 @@ pip install -r requirements.txt
 ```
 ---
 
-## 📂 Directory Structure
+## Directory Structure
 ```text
 Final-Year-Project/
 ├── Main_Process/
@@ -91,7 +91,7 @@ Final-Year-Project/
 ```
 
 ---
-## 💻 Usage
+## Usage
 
 ### 1. Data Preparation
 Ensure your dataset follows the KiTs23 structure or place NIfTI files (`.nii` / `.nii.gz`) in a case directory.
@@ -110,7 +110,7 @@ After processing, use the analysis script to generate statistical charts (saved 
 python Results_Analysis/stats.py
 ```
 
-## 🤝 Ackownledgement
+## Ackownledgement
  - Supervisor: Prof. Fei Ma
  - Dataset: KiTS23 Challenge Organizers
  - Computing Support: Dr. Zixun Lan
@@ -118,11 +118,11 @@ python Results_Analysis/stats.py
 
 ---
 
-## 📄 License
+## License
 This project is licensed under the [MIT License](LICENSE).
 
 ---
 
-## ✉️ Contact
+## Contact
 If you have any questions or feedback, please feel free to contact the project maintainer at [Felix.Liang24atoutlook.com].
 
