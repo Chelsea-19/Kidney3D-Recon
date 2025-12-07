@@ -84,7 +84,7 @@ Final-Year-Project/
 │   ├── poisson_reconstruction.py # Functions for Poisson surface reconstruction
 │   ├── seg.py                  # Functions for segmentation and volume calculation
 │   └── volume_estimation.py    # Function for estimating the volume of a mesh
-├── Resluts_Analysis/
+├── Results_Analysis/
 │   ├── stats.py                # Script for statistical analysis and visualization of results
 │   └── visualization.py        # Script for visualizing segmentation slices
 └── README.md                   # This README file
