@@ -76,7 +76,7 @@ pip install -r requirements.txt
 
 ## Directory Structure
 ```text
-Final-Year-Project/
+Kidney3D-Recon/
 ├── Main_Process/
 │   ├── data_utils.py           # Functions for loading and preprocessing point clouds
 │   ├── main.py                 # Main script for processing kidneys and generating results
